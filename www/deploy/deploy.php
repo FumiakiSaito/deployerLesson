@@ -2,6 +2,7 @@
 
 require 'recipe/common.php';
 
+# デプロイ先サーバ設定
 localServer('localhost')
 	->env('deploy_path', '/var/www/html') // デプロイ先ディレクトリ
 	->env('branch', 'master')             // デプロイするブランチ
@@ -22,7 +23,7 @@ set('shared_dirs', ['fuel/app/logs']);
 set('writable_dirs', ['fuel/app/logs', 'fuel/app/cache']);
 
 # 処理のグループ化設定
-# deployコマンドを実行するとprepare->symlinkまで実行される
+# deployコマンドを実行するとprepareからsymlinkまで実行される
 task('deploy', [
     'deploy:prepare',
     'deploy:release',

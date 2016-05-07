@@ -61,26 +61,28 @@ http://http://192.168.33.99/
 
 require 'recipe/common.php';
 
+# デプロイ先サーバ設定
 localServer('localhost')
-	->env('deploy_path', '/var/www/html')
+	->env('deploy_path', '/var/www/html') # デプロイ先ディレクトリ
+	->env('branch', 'master')             # デプロイするブランチ
 	->stage('local');
 
 
 # デプロイ元リポジトリ設定
-set('repository', 'https://hoge.git'); #HTTPSの場合、プロンプトでパスワードを入力する必要あり
-#set('repository', 'git@hoge.git');    #SSHの場合、鍵設定を行う必要あり
+set('repository', 'https://hoge.git'); # HTTPSの場合、プロンプトでパスワードを入力する必要あり
+#set('repository', 'git@hoge.git');    # SSHの場合、鍵設定を行う必要あり
 
 # 何世代残すか
 set('keep_releases', 3);
 
-# バージョン間で共有するディレクトリを作成
+# バージョン間で共有するディレクトリを設定
 set('shared_dirs', ['fuel/app/logs']);
 
 # 書き込み権限を変更するディレクトリを設定(エラーとなる。。)
 set('writable_dirs', ['fuel/app/logs', 'fuel/app/cache']);
 
 # 処理のグループ化設定
-# deployコマンドを実行するとprepare->symlinkまで実行される
+# deployコマンドを実行するとprepareからsymlinkまで実行される
 task('deploy', [
     'deploy:prepare',
     'deploy:release',
@@ -92,7 +94,7 @@ task('deploy', [
 # タスク完了後の処理設定
 # ここではdeploy実行後に完了メッセージを出力している
 task('deploy:done', function () {
-    write('Deploy done!');
+    writeln('Deploy done!');
 });
 after('deploy', 'deploy:done');
 ```
@@ -121,10 +123,10 @@ Available commands:
   deploy:writable     Make writable dirs
 ```
 
-※実質、実行すればデプロイ作業が完了するコマンドは存在しない。  
-それぞれ挙動が違い、それらを適切に選択し順番に実行する事で  
+※実質、1発実行すればデプロイ作業が完了するコマンドは存在しない。  
+それぞれ処理内容が違う為、適切に選択し実行する事で  
 デプロイ作業を完了させる仕組みなもよう。  
-ただしコマンドをまとめて実行させる事が可能（後述）
+ただしコマンドをまとめて実行させる事は可能（後述）
 
 ##コマンドを実行してみる
 
@@ -385,9 +387,8 @@ Deploy done!
 
 ##所感
 
-sharedディレクトリはリリース/ロールバック時に  
-世代管理したくないファイルの配置先とする事を目的としていると思われる。  
-例)  Fuelのログ出力先に設定すればリリース/ロールバックしてもログ出力先は同じ
+sharedディレクトリは各バージョン間で共有したいファイルを管理する為に使用すると思われる。  
+例)  Fuelのログ出力先に設定すればリリース/ロールバックしてもログ出力先は同じ  
 ログに関しては/var/logに出力したり、fluentdで集約するのであれば特に不要。
 
 導入する場合はcurrentディレクトリ(リンク)が作成されるので  
