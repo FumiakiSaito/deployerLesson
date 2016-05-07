@@ -1,0 +1,7 @@
+# inventory file for development servers
+
+[web]
+# hosts of development web servers
+
+[development:children]
+web

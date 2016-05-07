@@ -1,0 +1,4 @@
+
+common_playbook_path: ../common_playbook
+common_vars_path: '{{common_playbook_path}}/vars'
+common_roles_path: '{{common_playbook_path}}/roles'

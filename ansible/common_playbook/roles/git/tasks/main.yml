@@ -1,0 +1,4 @@
+---
+
+- name: install git
+  apt: pkg=git update_cache=no state=latest

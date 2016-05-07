@@ -1,0 +1,10 @@
+---
+
+- name: install mongodb
+  apt: pkg=mongodb update_cache=no state=latest
+
+- name: set the automatic start-up of the mongodb
+  command: sysv-rc-conf mongodb on
+
+- name: template /etc/mongodb.conf
+  template: src=mongodb.conf.j2 dest=/etc/mongodb.conf group=root owner=root mode=0644

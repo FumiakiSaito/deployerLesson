@@ -1,0 +1,7 @@
+# inventory file for local environment
+
+[web]
+192.168.33.99
+
+[local:children]
+web

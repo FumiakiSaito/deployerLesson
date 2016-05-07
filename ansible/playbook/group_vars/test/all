@@ -1,0 +1,5 @@
+# variables file for staging group
+
+## General
+env: staging
+ansible_ssh_user: ubuntu

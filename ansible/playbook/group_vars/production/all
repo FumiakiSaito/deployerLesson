@@ -1,0 +1,5 @@
+# variables file for production group
+
+## General
+env: production
+ansible_ssh_user: ubuntu

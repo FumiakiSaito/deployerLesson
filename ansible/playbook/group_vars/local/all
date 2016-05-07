@@ -1,0 +1,5 @@
+# variables file for local group
+
+## General
+env: local
+ansible_ssh_user: vagrant

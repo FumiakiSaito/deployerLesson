@@ -1,0 +1,8 @@
+---
+
+# vim
+- name: install vim
+  apt: pkg=vim update_cache=no state=latest
+
+- name: template /etc/vim/vimrc
+  template: src=vimrc.j2 dest=/etc/vim/vimrc group=root owner=root mode=0644

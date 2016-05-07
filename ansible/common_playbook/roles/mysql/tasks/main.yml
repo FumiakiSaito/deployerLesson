@@ -1,0 +1,25 @@
+---
+
+- name: install mysql
+  apt: pkg={{item}} update_cache=no state=latest
+  with_items: 
+    - mysql-server
+    - python-mysqldb
+
+- name: template ~/my.cnf
+  template: src=.my.cnf.j2 dest=~/.my.cnf group=root owner=root mode=0600
+  notify:
+    - restarted mysql
+
+# - name: set the user and password
+#   mysql_user: name=root password=root
+
+- name: template /etc/mysql/my.cnf
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf group=root owner=root mode=0644
+  notify:
+    - restarted mysql
+
+- name: install phpmyadmin
+  apt: pkg=phpmyadmin update_cache=no state=latest
+  notify:
+    - stopped apache2

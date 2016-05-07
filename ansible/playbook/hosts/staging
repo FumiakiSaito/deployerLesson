@@ -1,0 +1,7 @@
+# inventory file for staging servers
+
+[web]
+# hosts of staging web servers
+
+[staging:children]
+web

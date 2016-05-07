@@ -1,0 +1,11 @@
+---
+# playbook for db server
+
+- name: db server
+  hosts: db
+  become: yes
+  vars_files:
+    - ../../common_playbook/vars/common # 共通変数
+  roles:
+    - ../../common_playbook/roles/common # 共通処理の role は外側にある
+    - ../../common_playbook/roles/mongodb

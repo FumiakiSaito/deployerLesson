@@ -1,0 +1,55 @@
+---
+
+- name: updates a server
+  apt: update_cache=yes
+
+- name: upgrade a server
+  apt: upgrade=full
+
+# - name: set the locale to ja_JP.UTF-8
+#   locale_gen: name=ja_JP.UTF-8 state=present
+
+- name: install language-pack-ja
+  apt: pkg=language-pack-ja update_cache=yes state=latest
+
+- name: set the locale to ja_JP.UTF-8
+  command: update-locale LANG=ja_JP.UTF-8
+
+- name: setting the time zone
+  file: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime state=link force=yes
+  notify:
+    - update timezone
+
+# - name: setting the time zone
+#   command: timedatectl set-timezone Asia/Tokyo
+#   when: ansible_date_time.tz != 'Asia/Tokyo'
+
+- name: install basepackage
+  apt: pkg={{ item }} update_cache=yes state=latest
+  with_items:
+    - ntp
+    - redis-server
+    - python-pip
+    - sysv-rc-conf
+
+- name: stop ntp
+  service: name=ntp state=stopped
+
+- name: setting the system clock
+  command: ntpdate ntp.nict.jp
+  notify:
+    - start ntp
+
+- name: setting the system clock
+  command: ntpdate -u ntp.nict.jp
+
+- name: set the automatic start-up of the ntp
+  command: sysv-rc-conf ntp on
+
+# # redis-server
+# - name: install redis-server
+#   apt: pkg=redis-server update_cache=no state=latest
+
+# # python-pip
+# - name: install python-pip
+#  apt: pkg=python-pip update_cache=no state=latest

@@ -1,0 +1,7 @@
+---
+
+- name: update timezone
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- name: start ntp
+  service: name=ntp state=started

@@ -1,0 +1,28 @@
+---
+
+- name: install apache2
+  apt: pkg={{ item }} update_cache=yes state=latest
+  with_items:
+    - apache2
+    - libapache2-mod-php5
+
+- name: set the automatic start-up of the apache2
+  command: sysv-rc-conf apache2 on
+
+- name: template /etc/apache2/apache2.conf
+  template: src=apache2.conf.j2 dest=/etc/apache2/apache2.conf group=root owner=root mode=0644
+  notify:
+    # handlersの名前
+    - restart apache2
+
+- name: /etc/apache2/conf-available/security.conf
+  template: src=security.conf.j2 dest=/etc/apache2/conf-available/security.conf group=root owner=root mode=0644
+  notify:
+    - restart apache2
+
+- name: deactivation 000-default.conf
+  shell: a2dissite 000-default.conf
+  args:
+    chdir: /etc/apache2/sites-available/
+  notify:
+    - restart apache2

@@ -1,0 +1,7 @@
+---
+
+- name: restarted mysql
+  service: name=mysql state=restarted
+
+- name: stopped apache2
+  service: name=apache2 state=stopped

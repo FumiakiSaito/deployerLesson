@@ -1,0 +1,6 @@
+---
+
+- name: restart php5-fpm
+  # これだとエラーがでる
+  # service: name=php5-fpm state=restarted
+  command: service php5-fpm restart

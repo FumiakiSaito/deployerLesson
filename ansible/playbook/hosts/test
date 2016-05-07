@@ -1,0 +1,7 @@
+# inventory file for test servers
+
+[web]
+# hosts of test web servers
+
+[test:children]
+web

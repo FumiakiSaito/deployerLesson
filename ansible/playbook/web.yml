@@ -1,0 +1,14 @@
+---
+# playbook for web server
+
+- name: web server
+  hosts: web
+  become: yes
+  vars_files:
+    - ../common_playbook/vars/common # 共通変数
+  roles:
+    - ../common_playbook/roles/common # 共通処理の role は外側にある
+    - ../common_playbook/roles/php5
+    - ../common_playbook/roles/nginx
+    - ../common_playbook/roles/git
+    - nginx

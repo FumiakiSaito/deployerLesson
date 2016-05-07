@@ -1,0 +1,5 @@
+# variables file for development group
+
+## General
+env: development
+ansible_ssh_user: ubuntu

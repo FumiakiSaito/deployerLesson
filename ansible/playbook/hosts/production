@@ -1,0 +1,7 @@
+# inventory file for production servers
+
+[web]
+# hosts of production web servers
+
+[production:children]
+web
